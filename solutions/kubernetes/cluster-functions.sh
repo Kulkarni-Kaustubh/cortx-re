@@ -21,7 +21,7 @@
 source /var/tmp/functions.sh
 
 CALICO_PLUGIN_VERSION=latest
-K8_VERSION=1.19.0-0
+K8_VERSION=1.22.4
 DOCKER_VERSION=latest
 OS_VERSION="CentOS 7.9.2009"
 export Exception=100
@@ -271,7 +271,7 @@ function setup_primary_node(){
             curl https://docs.projectcalico.org/archive/$CALICO_PLUGIN_MAJOR_VERSION/manifests/calico.yaml -o calico-$CALICO_PLUGIN_VERSION.yaml || throw $Exception    
         fi
         # Setup IP_AUTODETECTION_METHOD for determining calico network.
-        # sed -i '/# Auto-detect the BGP IP address./i \            - name: IP_AUTODETECTION_METHOD\n              value: "interface=eth-0"' calico-$CALICO_PLUGIN_VERSION.yaml
+        sed -i '/# Auto-detect the BGP IP address./i \            - name: IP_AUTODETECTION_METHOD\n              value: "interface=eno1"' calico-$CALICO_PLUGIN_VERSION.yaml
         kubectl apply -f calico-$CALICO_PLUGIN_VERSION.yaml || throw $Exception
 
         # Install helm
